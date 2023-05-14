@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+</head>
+<style>
+   table,
+   th,
+   td,tr {
+      border: 1px solid black;
+      border-collapse: collapse;
+   }
+
+   .btn-edit,
+   .btn-delete {
+      border: none;
+      border-radius: 5px;
+      padding: 8px 16px;
+      margin: 6px 12px;      
+      text-transform: uppercase;
+   }
+   .btn-edit:hover,
+   .btn-delete:hover {
+      text-decoration: underline;
+      cursor: pointer;
+   }
+   .btn-edit {
+      background-color: rgb(212, 151, 72);
+   }
+   .btn-delete {
+      background-color: red;
+   }
+   .row-action {
+      display:flex;
+      justify-content: center;
+      align-items: center;
+   }
+</style>
+
+<body>
+   <h1>displayCRUD</h1>
+   <table style='width: 100%'>
+      <thead>
+         <tr>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th>Action</th>
+         </tr>
+      </thead>
+      <tbody>
+         <% for(let i=0; i < data.length; i++) {%>
+            <tr>
+               <td>
+                  <%= data[i].firstName %>
+               </td>
+               <td>
+                  <%= data[i].lastName %>
+               </td>
+               <td>
+                  <%= data[i].address %>
+               </td>
+               <td>
+                  <%= data[i].email %>
+               </td>
+               <td class='row-action'>
+                  <a href="/editCRUD?id=<%= data[i].id %>">
+                     <button class='btn-edit' type='button'>Edit</button>
+                  </a>
+                  <button class='btn-delete' type='submit'>Delete</button>
+               </td>
+            </tr>
+            <% }%>
+      </tbody>
+   </table>
+</body>
+
+</html>

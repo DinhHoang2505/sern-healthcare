@@ -25,10 +25,31 @@ const homeController = {
 
     async postCRUD(req, res) {
         let message = await CRUDService.createNewUser(req.body)
-        console.log(message);
-        console.log(req.body);
         return res.render('postcrud')
-    }
+    },
+
+    async displayCRUD(req, res) {
+        let data = await CRUDService.getAllUser()
+        return res.render('displayCRUD', { data })
+    },
+
+    async editCRUD(req, res) {
+        let userId = req.query.id
+        if (userId) {
+            let userData = await CRUDService.getUserInfoById(userId)
+            if (userData) {
+
+                return res.render('editCRUD', { userData })
+            }
+            return res.send('<h1>User not found!!!</h1>')
+        }
+        return res.send('<h1>User not found!!!</h1>')
+    },
+    async putCRUD(req, res) {
+        let data = req.body
+        await CRUDService.updateUserData(data)
+        return res.redirect('displayCRUD')
+    },
 }
 
 module.exports = homeController
