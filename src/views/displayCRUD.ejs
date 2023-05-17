@@ -10,7 +10,8 @@
 <style>
    table,
    th,
-   td,tr {
+   td,
+   tr {
       border: 1px solid black;
       border-collapse: collapse;
    }
@@ -20,22 +21,26 @@
       border: none;
       border-radius: 5px;
       padding: 8px 16px;
-      margin: 6px 12px;      
+      margin: 6px 12px;
       text-transform: uppercase;
    }
+
    .btn-edit:hover,
    .btn-delete:hover {
       text-decoration: underline;
       cursor: pointer;
    }
+
    .btn-edit {
       background-color: rgb(212, 151, 72);
    }
+
    .btn-delete {
       background-color: red;
    }
+
    .row-action {
-      display:flex;
+      display: flex;
       justify-content: center;
       align-items: center;
    }
@@ -72,7 +77,9 @@
                   <a href="/editCRUD?id=<%= data[i].id %>">
                      <button class='btn-edit' type='button'>Edit</button>
                   </a>
-                  <button class='btn-delete' type='submit'>Delete</button>
+                  <a href="/deleteCRUD?id=<%= data[i].id %>">
+                     <button class='btn-delete' type='button'>Delete</button>
+                  </a>
                </td>
             </tr>
             <% }%>

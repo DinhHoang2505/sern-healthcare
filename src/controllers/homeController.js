@@ -45,10 +45,20 @@ const homeController = {
         }
         return res.send('<h1>User not found!!!</h1>')
     },
+
     async putCRUD(req, res) {
         let data = req.body
         await CRUDService.updateUserData(data)
         return res.redirect('displayCRUD')
+    },
+
+    async deleteCRUD(req, res) {
+        let userId = req.query.id
+        if (userId) {
+            await CRUDService.deleteUserInfoById(userId)
+            return res.redirect('displayCRUD')
+        }
+        return res.send('<h1>User not found!!!</h1>')
     },
 }
 

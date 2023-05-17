@@ -74,12 +74,29 @@ const updateUserData = (data) => {
 
             if (dataUserInfo) {
                 dataUserInfo.firstName = data.firstName,
-                dataUserInfo.lastName = data.lastName,
-                dataUserInfo.address = data.address
+                    dataUserInfo.lastName = data.lastName,
+                    dataUserInfo.address = data.address
                 await dataUserInfo.save()
-               let allUSer =  await db.User.findAll()
+                let allUSer = await db.User.findAll()
                 resolve(allUSer)
-            } 
+            }
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+const deleteUserInfoById = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let userDelete = await db.User.findOne({
+                where: { id: userId },
+            })
+
+            if (userDelete) {
+                userDelete.destroy()
+                resolve()
+            }
         } catch (error) {
             reject(error);
         }
@@ -91,5 +108,6 @@ export default {
     hashUserPasswords,
     getAllUser,
     getUserInfoById,
-    updateUserData
+    updateUserData,
+    deleteUserInfoById
 }
