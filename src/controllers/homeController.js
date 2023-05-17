@@ -60,6 +60,7 @@ const homeController = {
         }
         return res.send('<h1>User not found!!!</h1>')
     },
+
 }
 
 module.exports = homeController
