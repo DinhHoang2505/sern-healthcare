@@ -10,6 +10,7 @@ const initWebRoutes = (app) => {
     app.get('/getCRUD', homeController.getCRUD);
     app.get('/about', homeController.about);
 
+    app.post('/api/get-all-user', userController.handleGetAllUsers)
     app.post('/api/login', userController.handleLogin)
 
     app.get('/', homeController.home);

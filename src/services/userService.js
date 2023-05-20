@@ -11,11 +11,10 @@ const handleUserLogin = (email, password) => {
                 let user = await db.User.findOne({
                     attributes: ['email', 'roleId', 'password'],
                     where: { email },
-                    raw: true
                 })
                 if (user) {
                     //compare password
-                    let check = await bcrypt.compareSync(password, user.password)
+                    let check = bcrypt.compareSync(password, user.password)
                     if (check) {
                         userData.errCode = 0;
                         userData.errMessage = `OK`
@@ -41,7 +40,6 @@ const handleUserLogin = (email, password) => {
     })
 }
 
-
 const checkUserEmail = (email) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -57,8 +55,42 @@ const checkUserEmail = (email) => {
     })
 }
 
+const getAllUsers = (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let users = '';
+            if (userId === "ALL") {
+                users = await db.User.findAll({
+                    attributes: {
+                        exclude:
+                            [
+                                "password",
+                            ]
+                    },
+                })
+            }
+
+            if (userId && userId !== "ALL") {
+                users = await db.User.findOne({
+                    where: { id: userId },
+                    attributes: {
+                        exclude:
+                            [
+                                "password",
+                            ]
+                    },
+                })
+            }
+            console.log(users);
+            resolve(users)
+        } catch (error) {
+            console.log(error);
+        }
+    })
+}
 
 module.exports = {
     checkUserEmail,
-    handleUserLogin
+    handleUserLogin,
+    getAllUsers,
 }

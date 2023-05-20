@@ -25,7 +25,7 @@ const homeController = {
 
     async postCRUD(req, res) {
         let message = await CRUDService.createNewUser(req.body)
-        return res.render('postcrud')
+        return res.redirect('displayCRUD')
     },
 
     async displayCRUD(req, res) {
