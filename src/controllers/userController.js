@@ -21,7 +21,15 @@ const userController = {
     },
 
     async handleGetAllUsers(req, res) {
-        let id = req.body.id
+        let id = req.query.id
+        if (!id) {
+            return res.status(200).json({
+                errCode: 1,
+                message: "Missing required parameters",
+                users: []
+            })
+        }
+
         let users = await userService.getAllUsers(id)
 
         return res.status(200).json({
@@ -29,6 +37,25 @@ const userController = {
             message: "OK",
             users
         })
+    },
+
+    async handleCreateNewUser(req, res) {
+        let message = await userService.createNewUser(req.body)
+        console.log(message)
+        return res.status(200).json(message)
+    },
+
+    async handleEditUser(req, res) { },
+    async handleDeleteUser(req, res) {
+        let id = req.body.id
+        if (!id) {
+            return res.status(200).json({
+                errCode: 1,
+                errMessage: "Missing required parameters",
+            })
+        }
+        let message = await userService.deleteUser(id)
+        return res.status(200).json(message)
     }
 }
 

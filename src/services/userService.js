@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs'
 import db from "../models";
 
+const salt = bcrypt.genSaltSync(10);
+
 const handleUserLogin = (email, password) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -59,7 +61,7 @@ const getAllUsers = (userId) => {
     return new Promise(async (resolve, reject) => {
         try {
             let users = '';
-            if (userId === "ALL") {
+            if (userId === "All") {
                 users = await db.User.findAll({
                     attributes: {
                         exclude:
@@ -70,7 +72,7 @@ const getAllUsers = (userId) => {
                 })
             }
 
-            if (userId && userId !== "ALL") {
+            if (userId && userId !== "All") {
                 users = await db.User.findOne({
                     where: { id: userId },
                     attributes: {
@@ -81,16 +83,80 @@ const getAllUsers = (userId) => {
                     },
                 })
             }
-            console.log(users);
             resolve(users)
         } catch (error) {
             console.log(error);
         }
     })
+
 }
+
+const hashUserPasswords = (password) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const hashPassword = await bcrypt.hashSync(password, salt);
+            resolve(hashPassword)
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+const createNewUser = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let checkEmailExist = await checkUserEmail(data.email)
+            if (checkEmailExist === true) {
+                resolve({
+                    errCode: 1,
+                    message: "Email already existing",
+                })
+            } else {
+                let hashPasswordFromBcrypt = await hashUserPasswords(data.password)
+                await db.User.create({
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    password: hashPasswordFromBcrypt,
+                    gender: data.gender === '1' ? true : false,
+                    email: data.email,
+                    phoneNumber: data.phoneNumber,
+                    address: data.address,
+                    roleId: data.roleId,
+                })
+                resolve({
+                    errCode: 0.,
+                    message: 'OK'
+                })
+            }
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+const deleteUser = async (userId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let user = await db.User.findOne({
+                where: { id: userId }
+            })
+
+            if (user) {
+                user.destroy()
+                resolve()
+            }
+            
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 
 module.exports = {
     checkUserEmail,
     handleUserLogin,
     getAllUsers,
+    createNewUser,
+    deleteUser
 }

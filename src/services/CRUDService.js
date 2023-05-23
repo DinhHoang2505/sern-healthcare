@@ -71,14 +71,16 @@ const updateUserData = (data) => {
             let dataUserInfo = await db.User.findOne({
                 where: { id: data.id },
             })
-
             if (dataUserInfo) {
                 dataUserInfo.firstName = data.firstName,
                     dataUserInfo.lastName = data.lastName,
                     dataUserInfo.address = data.address
-                await dataUserInfo.save()
-                let allUSer = await db.User.findAll()
-                resolve(allUSer)
+                await db.User.update({ ...dataUserInfo }, { where: { id: data.id } })
+                let allUSers = await db.User.findAll()
+                resolve(allUSers)
+            } else {
+                let allUSers = await db.User.findAll()
+                resolve(allUSers)
             }
         } catch (error) {
             reject(error);

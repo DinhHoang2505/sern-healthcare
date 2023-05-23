@@ -38,7 +38,6 @@ const homeController = {
         if (userId) {
             let userData = await CRUDService.getUserInfoById(userId)
             if (userData) {
-
                 return res.render('editCRUD', { userData })
             }
             return res.send('<h1>User not found!!!</h1>')

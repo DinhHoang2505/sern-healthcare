@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import dotenv from "dotenv"
 // import cors from "cors";
-import methodOverride from "method-override";
+var methodOverride = require('method-override')
 import viewEngine from "./config/viewEngine";
 import initWebRoutes from "./route/web";
 import { connectDB } from "./config/connectDB"
@@ -11,6 +11,8 @@ import { connectDB } from "./config/connectDB"
 dotenv.config()
 const app = express()
 const port = process.env.PORT || 8080;
+
+app.use(methodOverride('_method'))
 
 // app.use(cors()) 
 app.use(function (req, res, next) {
@@ -31,7 +33,6 @@ app.use(function (req, res, next) {
    // Pass to next layer of middleware
    next();
 });
-app.use(methodOverride('_method'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
