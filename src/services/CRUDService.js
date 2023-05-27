@@ -96,7 +96,9 @@ const deleteUserInfoById = (userId) => {
             })
 
             if (userDelete) {
-                await userDelete.destroy()
+                await db.User.destroy({
+                    where: { id: userId },
+                })
                 resolve()
             }
         } catch (error) {
