@@ -45,9 +45,14 @@ const userController = {
         return res.status(200).json(message)
     },
 
-    async handleEditUser(req, res) { },
+    async handleEditUser(req, res) {
+        let data = req.body
+        let message = await userService.updateUserData(data)
+        return res.status(200).json(message)
+    },
+
     async handleDeleteUser(req, res) {
-        let id = req.body.id
+        let id = req.query.id
         if (!id) {
             return res.status(200).json({
                 errCode: 1,
@@ -56,7 +61,26 @@ const userController = {
         }
         let message = await userService.deleteUser(id)
         return res.status(200).json(message)
-    }
+
+    },
+
+    async handleGetUserByEmail(req, res) {
+        let email = req.body.email
+        let isCheck = await userService.checkUserEmail(email)
+
+        if (isCheck) {
+            return res.status(200).json({
+                errCode: 1,
+                errMessage: "Email already used",
+            })
+        } else {
+            return res.status(200).json({
+                errCode: 0,
+                errMessage: "OK",
+            })
+        }
+
+    },
 }
 
 module.exports = userController

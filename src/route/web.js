@@ -12,9 +12,12 @@ const initWebRoutes = (app) => {
 
     app.post('/api/login', userController.handleLogin)
     app.get('/api/get-all-user', userController.handleGetAllUsers)
+    app.get('/api/get-user-by-email', userController.handleGetUserByEmail)
     app.post('/api/create-new-user', userController.handleCreateNewUser)
-    app.get('api/edit-user', userController.handleEditUser)
-    app.get('api/delete-user', userController.handleDeleteUser)
+    app.put('/api/edit-user', userController.handleEditUser)
+    app.get('/api/delete-user', userController.handleDeleteUser)
+
+
     app.get('/', homeController.home);
 }
 

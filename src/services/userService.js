@@ -134,29 +134,67 @@ const createNewUser = (data) => {
     })
 }
 
-const deleteUser = async (userId) => {
+const deleteUser = (userId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let user = await db.User.findOne({
-                where: { id: userId }
+            let userDelete = await db.User.findOne({
+                where: { id: userId },
             })
 
-            if (user) {
-                user.destroy()
-                resolve()
+            if (!userDelete) {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'User not found !!!'
+                })
             }
-            
+
+            await db.User.destroy({
+                where: { id: userId },
+            })
+
+            resolve({
+                errCode: 0,
+                errMessage: 'Delete success !!!'
+            })
+
         } catch (error) {
             reject(error)
         }
     })
 }
 
+const updateUserData = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let dataUserInfo = await db.User.findOne({
+                where: { id: data.id },
+            })
+            if (dataUserInfo) {
+                dataUserInfo.firstName = data.firstName;
+                dataUserInfo.lastName = data.lastName;
+                dataUserInfo.address = data.address;
+                await db.User.update({ ...dataUserInfo }, { where: { id: data.id } })
+                resolve({
+                    errCode: 0,
+                    errMessage: 'Update success !!!'
+                })
+            } else {
+                resolve({
+                    errCode: 1,
+                    errMessage: 'User not found !!!'
+                })
+            }
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
 
 module.exports = {
     checkUserEmail,
     handleUserLogin,
     getAllUsers,
     createNewUser,
-    deleteUser
+    deleteUser,
+    updateUserData
 }

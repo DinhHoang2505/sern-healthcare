@@ -72,9 +72,9 @@ const updateUserData = (data) => {
                 where: { id: data.id },
             })
             if (dataUserInfo) {
-                dataUserInfo.firstName = data.firstName,
-                    dataUserInfo.lastName = data.lastName,
-                    dataUserInfo.address = data.address
+                dataUserInfo.firstName = data.firstName;
+                dataUserInfo.lastName = data.lastName;
+                dataUserInfo.address = data.address;
                 await db.User.update({ ...dataUserInfo }, { where: { id: data.id } })
                 let allUSers = await db.User.findAll()
                 resolve(allUSers)
@@ -96,7 +96,7 @@ const deleteUserInfoById = (userId) => {
             })
 
             if (userDelete) {
-                userDelete.destroy()
+                await userDelete.destroy()
                 resolve()
             }
         } catch (error) {
